@@ -22,96 +22,47 @@
             </el-form-item>
             <el-form-item label="验证码" prop="code" required>
                 <el-row>
-                    <el-col :span="16">
+                    <el-col :span="15">
                         <el-input v-model="ruleForm.code"></el-input>
                     </el-col>
-                    <el-col :span="8">
-                        <el-button size="">获取验证码</el-button>
+                    <el-col :span="9">
+                        <el-button size="" @click="handleGetCode" :disabled="isSendCode"
+                            >{{btnText}}</el-button
+                        >
                     </el-col>
                 </el-row>
             </el-form-item>
             <el-form-item label="用户角色" prop="role">
                 <el-radio-group v-model="ruleForm.role">
                     <el-radio label="admin">管理员用户</el-radio>
-                    <el-radio label="customer">普通用户</el-radio>
+                    <el-radio label="coustomer">普通用户</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')"
-                    >注册</el-button
-                >
-                <el-button @click="resetForm('ruleForm')">重置</el-button>
+                <!-- <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button> -->
+                <el-button type="primary" @click="submitForm('ruleForm', handleSubmit)">注册</el-button>
             </el-form-item>
         </el-form>
     </div>
 </template>
 
 <script>
+import { registerUser } from "@/api/registerUser";
+import vaildateInput from '@/mixins/vaildateInput.js'
 export default {
-    data() {
-        var validateUserName = (rule, value, callback) => {
-            if (value === "") {
-                callback(new Error("请输入用户名"));
-            } else {
-                callback();
-            }
-        };
-        var validatePass = (rule, value, callback) => {
-            if (value === "") {
-                callback(new Error("请输入密码"));
-            } else {
-                callback();
-            }
-        };
-        var checkEmail = (rule, value, callback) => {
-            if (value === "") {
-                callback(new Error("请输入邮箱"));
-            } else {
-                const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                if (!reg.test(this.ruleForm.email)) {
-                    callback(new Error("邮箱格式不正确"));
-                } else {
-                    callback();
-                }
-            }
-        };
-        var validateCode = (rule, value, callback) => {
-            if (value === "") {
-                callback(new Error("验证码不能为空"));
-            } else {
-                callback();
-            }
-        };
-        return {
-            ruleForm: {
-                username: "",
-                password: "",
-                email: "",
-                code: "",
-                role: "admin",
-            },
-            rules: {
-                username: [{ validator: validateUserName, trigger: "blur" }],
-                password: [{ validator: validatePass, trigger: "blur" }],
-                email: [{ validator: checkEmail, trigger: "blur" }],
-                code: [{ validator: validateCode, trigger: "blur" }],
-            },
-        };
+    mixins: [vaildateInput()],
+    created() {
+        this.ruleForm.role = "admin";
     },
     methods: {
-        submitForm(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    this.$message.success("注册成功");
-                    console.log("注册成功", this.ruleForm);
-                } else {
-                    this.$message.error("表单有误，请认真校验");
-                    return false;
-                }
-            });
-        },
-        resetForm(formName) {
-            this.$refs[formName].resetFields();
+        async handleSubmit(){
+            const res = await registerUser(this.ruleForm);
+            if(res.status === 'success') {
+                this.$message.success(res.msg);
+                this.$emit('login');
+            }else {
+                this.$message.warning(res.msg);
+            }
         },
     },
 };

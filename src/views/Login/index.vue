@@ -1,11 +1,11 @@
 <template>
     <div class="login-container">
         <el-tabs v-model="activeName" type="card">
-            <el-tab-pane label="登录" name="first">
+            <el-tab-pane label="登录" name="login">
                 <Login />
             </el-tab-pane>
-            <el-tab-pane label="注册" name="second">
-                <Register />
+            <el-tab-pane label="注册" name="register">
+                <Register @login="activeName = 'login'" />
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -20,11 +20,10 @@ export default {
     },
     data() {
         return {
-            activeName: "first",
+            activeName: "login",
         };
     },
     methods: {
-        
     },
 };
 </script>

@@ -1,12 +1,20 @@
 import Home from '@/views/Home'
 import Login from '@/views/Login'
-import Statistics from '@/views/Statistics'
-import AddGoods from '@/views/Goods/AddGoods.vue'
-import GoodsList from '@/views/Goods/GoodsList.vue'
-import GoodsManage from '@/views/Goods/GoodsManage.vue'
+import FindPass from '@/views/Login/components/FindPass'
+import Statistics from '@/components/Statistics'
+import UserInfo from '@/components/UserInfo'
+import AddGoods from '@/components/Goods/AddGoods.vue'
+import GoodsList from '@/components/Goods/GoodsList.vue'
+import GoodsManage from '@/components/Goods/GoodsManage.vue'
 export default [
     {
         path: '/',
+        redirect: {
+            path: 'Home'
+        }
+    },
+    {
+        path: '/home',
         name: 'Home',
         component: Home,
         redirect: {
@@ -16,7 +24,8 @@ export default [
             navItem: '首页'
         },
         children: [
-            { path: '/home/statistics', component: Statistics, name: "Statistics", meta: { navItem: "统计" } }
+            { path: '/home/userInfo', component: UserInfo, name: "UserInfo", meta: { navItem: "个人中心" } },
+            { path: '/home/statistics', component: Statistics, name: "Statistics", meta: { navItem: "统计" } },
         ]
     },
     {
@@ -38,6 +47,11 @@ export default [
     {
         path: '/login',
         name: 'Login',
-        component: Login
+        component: Login,
+    },
+    {
+        path: '/findPass',
+        name: 'FindPass',
+        component: FindPass,
     }
 ]

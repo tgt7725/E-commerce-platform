@@ -19,20 +19,15 @@
                         v-for="(sub, i2) in m.children"
                         :key="sub.title"
                     >
-                        <!-- <template v-if="!sub.canHidden">
-                            <router-link :to="sub.path" v-if="Cookie.get('role') !== 'admin'">
-                                <el-menu-item :index="sub.title">
-                                    <i class="el-icon-location"></i>
-                                    <span>{{ sub.title }}</span>
-                                </el-menu-item>
-                            </router-link>
-                        </template> -->
-                        <router-link :to="sub.path">
-                                <el-menu-item :index="sub.title">
-                                    <i class="el-icon-location"></i>
-                                    <span>{{ sub.title }}</span>
-                                </el-menu-item>
-                            </router-link>
+                        <router-link
+                            :to="sub.path"
+                            v-if="!sub.canHidden || role === 'admin'"
+                        >
+                            <el-menu-item :index="sub.title">
+                                <i class="el-icon-location"></i>
+                                <span>{{ sub.title }}</span>
+                            </el-menu-item>
+                        </router-link>
                     </el-menu-item-group>
                 </template>
             </el-submenu>
@@ -41,12 +36,15 @@
 </template>
 
 <script>
-import Cookie from 'js-cookie'
 export default {
+    async created() {
+        await this.$store.dispatch("loginUser/whoAmI");
+        this.role = this.$store.state.loginUser.loginUser.role
+    },
     data() {
         return {
-            Cookie
-        }
+            role: "admin",
+        };
     },
     props: ["isCollapse", "menu"],
 };

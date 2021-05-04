@@ -9,16 +9,20 @@
                     @click="handleHidden"
                 ></el-button>
                 <el-breadcrumb separator="/">
-                    <el-breadcrumb-item v-for="(m, i) in breadMenu" :key="i">{{m}}</el-breadcrumb-item>
+                    <el-breadcrumb-item v-for="(m, i) in breadMenu" :key="i">{{
+                        m
+                    }}</el-breadcrumb-item>
                 </el-breadcrumb>
             </div>
 
             <el-dropdown @command="handleClick">
                 <span class="el-dropdown-link">
-                    欢迎您，{{user.username ? user.username : "主人"}}<i class="el-icon-arrow-down el-icon--right"></i>
+                    欢迎您，{{ username
+                    }}<i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>退出</el-dropdown-item>
+                    <el-dropdown-item command="home">个人中心</el-dropdown-item>
+                    <el-dropdown-item command="exit">退出</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
         </div>
@@ -26,25 +30,31 @@
 </template>
 
 <script>
-import {whoAmI, loginOut} from '@/api/user.js'
+import { mapState } from "vuex";
 export default {
-    data() {
-        return {
-            user: {}
-        }
+    computed: {
+        ...mapState("loginUser", {
+            username: (state) =>
+                state.loginUser ? state.loginUser.username : "",
+        }),
     },
-    props: ['breadMenu'],
-    created() {
-        this.user = whoAmI();
+    props: ["breadMenu"],
+    async created() {
+        await this.$store.dispatch("loginUser/whoAmI");
     },
     methods: {
         handleHidden() {
-            this.$emit('hiddenMenu');
+            this.$emit("hiddenMenu");
         },
-        handleClick() {
-            loginOut();
-            this.$router.push('/login')
-        }
+        async handleClick(e) {
+            if (e === "exit") {
+                await this.$store.dispatch("loginUser/loginOut");
+                this.$router.push("/login");
+            } else {
+                this.$route.name !== "UserInfo" &&
+                    this.$router.push({ name: "UserInfo" });
+            }
+        },
     },
 };
 </script>
@@ -62,7 +72,6 @@ export default {
     .left {
         display: flex;
         justify-content: space-between;
-        
     }
 
     .el-breadcrumb {

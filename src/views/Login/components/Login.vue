@@ -17,10 +17,12 @@
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
+            <div class="find_password">
+                <router-link :to="{ name: 'FindPass' }">找回密码</router-link>
+            </div>
             <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')"
-                    >登录</el-button
-                >
+                <!-- <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button> -->
+                <el-button type="primary" @click="submitForm('ruleForm', handleSubmit)">登录</el-button>
                 <el-button @click="resetForm('ruleForm')">重置</el-button>
             </el-form-item>
         </el-form>
@@ -28,59 +30,39 @@
 </template>
 
 <script>
-import {login} from '@/api/user.js'
+import vaildateInput from '@/mixins/vaildateInput.js'
 export default {
-    data() {
-        var checkEmail = (rule, value, callback) => {
-            if (value === "") {
-                callback(new Error("请输入邮箱"));
-            } else {
-                const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                if (!reg.test(this.ruleForm.email)) {
-                    callback(new Error("邮箱格式不正确"));
-                }else {
-                  callback();
-                }
-            }
-        };
-        var validatePass = (rule, value, callback) => {
-            if (value === "") {
-                callback(new Error("请输入密码"));
-            } else {
-                callback();
-            }
-        };
-        return {
-            ruleForm: {
-                email: "",
-                password: "",
-            },
-            rules: {
-                password: [{ validator: validatePass, trigger: "blur" }],
-                email: [{ validator: checkEmail, trigger: "blur" }],
-            },
-        };
-    },
+    mixins: [vaildateInput()],
     methods: {
-        submitForm(formName) {
-            this.$refs[formName].validate(async (valid) => {
-                if (valid) {
-                    const res = await login(this.ruleForm.email, this.ruleForm.password);
-                    if(res.status === 'success') {
-                      this.$message.success(res.msg);
-                      this.$router.push('/');
-                    }else {
-                      this.$message.error(res.msg)
-                    }
-                }
+        async handleSubmit() {
+            await this.$store.dispatch("loginUser/login", {
+                email: this.ruleForm.email,
+                password: this.ruleForm.password,
             });
-        },
-        resetForm(formName) {
-            this.$refs[formName].resetFields();
-        },
+            if (
+                this.$store.state.loginUser.loginInfo.status ===
+                "success"
+            ) {
+                this.$message.success(
+                    this.$store.state.loginUser.loginInfo.msg
+                );
+                this.$router.push("/");
+            } else {
+                this.$message.error(
+                    this.$store.state.loginUser.loginInfo.msg
+                );
+            }
+        }
     },
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+.find_password {
+    position: relative;
+    text-align: right;
+    top: -10px;
+    font-size: 14px;
+    text-decoration: underline;
+}
 </style>
