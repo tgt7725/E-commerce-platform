@@ -1,4 +1,5 @@
 import { getCode } from "@/api/getCode";
+import { mapState } from "vuex";
 export default function () {
     return {
         data() {
@@ -54,11 +55,16 @@ export default function () {
                 btnText: '获取验证码',
             }
         },
+        computed: {
+            ...mapState("loginUser", ["loading"]),
+        },
         methods: {
             submitForm(formName, callback) {
                 this.$refs[formName].validate(async (valid) => {
                     if (valid) {
-                        callback();
+                        this.$store.commit('loginUser/setLoading', true);
+                        await callback();
+                        this.$store.commit('loginUser/setLoading', false);
                     }
                 });
             },

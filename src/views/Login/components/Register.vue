@@ -40,7 +40,12 @@
             </el-form-item>
             <el-form-item>
                 <!-- <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button> -->
-                <el-button type="primary" @click="submitForm('ruleForm', handleSubmit)">注册</el-button>
+                <el-button
+                    :disabled="loading"
+                    type="primary"
+                    @click="submitForm('ruleForm', handleSubmit)"
+                    >{{ loading ? "注册中" : "注册" }}</el-button
+                >
             </el-form-item>
         </el-form>
     </div>

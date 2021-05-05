@@ -67,7 +67,13 @@
                     >修改</el-button
                 >
                 <!-- <el-button v-else type="primary" @click="submitForm('ruleForm')">提交</el-button> -->
-                <el-button v-else type="primary" @click="submitForm('ruleForm', handleSubmit)">提交</el-button>
+                <el-button
+                    v-else
+                    :disabled="loading"
+                    type="primary"
+                    @click="submitForm('ruleForm', handleSubmit)"
+                    >{{ loading ? "提交中" : "提交" }}</el-button
+                >
             </el-form-item>
         </el-form>
     </div>
@@ -93,8 +99,8 @@ export default {
     methods: {
         async handleSubmit() {
             this.ruleForm.newPassword = this.ruleForm.newPassword
-                    ? this.ruleForm.newPassword
-                    : this.ruleForm.password;
+                ? this.ruleForm.newPassword
+                : this.ruleForm.password;
             const res = await changeUserInfo(this.ruleForm);
             if (res.status === "success") {
                 this.$message.success(res.msg);
