@@ -35,7 +35,7 @@
             </el-form-item>
             <el-form-item>
                 <!-- <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button> -->
-                <el-button type="primary" @click="submitForm('ruleForm', handleSubmit)">提交</el-button>
+                <el-button :disabled="loading" type="primary" @click="submitForm('ruleForm', handleSubmit)">{{loading ? '提交中' : '提交'}}</el-button>
             </el-form-item>
         </el-form>
     </div>

@@ -22,7 +22,12 @@
             </div>
             <el-form-item>
                 <!-- <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button> -->
-                <el-button type="primary" @click="submitForm('ruleForm', handleSubmit)">登录</el-button>
+                <el-button
+                    :disabled="loading"
+                    type="primary"
+                    @click="submitForm('ruleForm', handleSubmit)"
+                    >{{ loading ? "登录中" : "登录" }}</el-button
+                >
                 <el-button @click="resetForm('ruleForm')">重置</el-button>
             </el-form-item>
         </el-form>
@@ -30,7 +35,7 @@
 </template>
 
 <script>
-import vaildateInput from '@/mixins/vaildateInput.js'
+import vaildateInput from "@/mixins/vaildateInput.js";
 export default {
     mixins: [vaildateInput()],
     methods: {
@@ -39,20 +44,15 @@ export default {
                 email: this.ruleForm.email,
                 password: this.ruleForm.password,
             });
-            if (
-                this.$store.state.loginUser.loginInfo.status ===
-                "success"
-            ) {
+            if (this.$store.state.loginUser.loginInfo.status === "success") {
                 this.$message.success(
                     this.$store.state.loginUser.loginInfo.msg
                 );
                 this.$router.push("/");
             } else {
-                this.$message.error(
-                    this.$store.state.loginUser.loginInfo.msg
-                );
+                this.$message.error(this.$store.state.loginUser.loginInfo.msg);
             }
-        }
+        },
     },
 };
 </script>
