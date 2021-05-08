@@ -35,6 +35,7 @@ export default {
                     obj.path = r.path;
                     obj.canHidden = r.meta.canHidden ? r.meta.canHidden : false;
                     obj.children = dfs(r.children);
+                    obj.icon = r.meta.icon;
                     arr.push(obj);                    
                 }
             })

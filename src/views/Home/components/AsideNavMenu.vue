@@ -11,7 +11,7 @@
         >
             <el-submenu v-for="(m, i1) in menu" :key="m.title" :index="m.title">
                 <template slot="title">
-                    <i class="el-icon-location"></i>
+                    <i :class="m.icon"></i>
                     <span>{{ m.title }}</span>
                 </template>
                 <template v-if="m.children">
@@ -23,8 +23,8 @@
                             :to="sub.path"
                             v-if="!sub.canHidden || role === 'admin'"
                         >
-                            <el-menu-item :index="sub.title">
-                                <i class="el-icon-location"></i>
+                            <el-menu-item :index="sub.title" class="sub-menu-item">
+                                <i :class="sub.icon"></i>
                                 <span>{{ sub.title }}</span>
                             </el-menu-item>
                         </router-link>
@@ -56,5 +56,11 @@ export default {
 }
 .el-menu-item-group__title {
     display: none;
+}
+.sub-menu-item:hover {
+    color: rgb(255, 208, 75)!important;
+    i {
+        color: rgb(255, 208, 75)!important;
+    }
 }
 </style>
