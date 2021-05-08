@@ -21,11 +21,12 @@ export default [
             name: 'Statistics'
         },
         meta: {
-            navItem: '首页'
+            navItem: '首页',
+            icon: 'el-icon-menu'
         },
         children: [
-            { path: '/home/userInfo', component: UserInfo, name: "UserInfo", meta: { navItem: "个人中心" } },
-            { path: '/home/statistics', component: Statistics, name: "Statistics", meta: { navItem: "统计" } },
+            { path: '/home/userInfo', component: UserInfo, name: "UserInfo", meta: { navItem: "个人中心", icon: 'el-icon-s-home' } },
+            { path: '/home/statistics', component: Statistics, name: "Statistics", meta: { navItem: "统计", icon: 'el-icon-s-data' } },
         ]
     },
     {
@@ -36,11 +37,12 @@ export default [
             name: 'GoodsList'
         },
         meta: {
-            navItem: '商品'
+            navItem: '商品',
+            icon: 'el-icon-menu'
         },
         children: [
-            { path: '/goods/add', component: AddGoods, name: "AddGoods", meta: { navItem: "添加商品" } },
-            { path: '/goods/list', component: GoodsList, name: "GoodsList", meta: { navItem: "商品列表" } },
+            { path: '/goods/add', component: AddGoods, name: "AddGoods", meta: { navItem: "添加商品", icon: 'el-icon-circle-plus-outline' } },
+            { path: '/goods/list', component: GoodsList, name: "GoodsList", meta: { navItem: "商品列表", icon: 'el-icon-s-fold' } },
             { path: '/goods/manage', component: GoodsManage, name: "GoodsManage", meta: { navItem: "类目管理", canHidden: true } },
         ]
     },
