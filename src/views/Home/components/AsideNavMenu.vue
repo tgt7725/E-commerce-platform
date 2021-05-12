@@ -23,7 +23,10 @@
                             :to="sub.path"
                             v-if="!sub.canHidden || role === 'admin'"
                         >
-                            <el-menu-item :index="sub.title" class="sub-menu-item">
+                            <el-menu-item
+                                :index="sub.title"
+                                class="sub-menu-item"
+                            >
                                 <i :class="sub.icon"></i>
                                 <span>{{ sub.title }}</span>
                             </el-menu-item>
@@ -39,7 +42,7 @@
 export default {
     async created() {
         await this.$store.dispatch("loginUser/whoAmI");
-        this.role = this.$store.state.loginUser.loginUser.role
+        this.role = this.$store.state.loginUser.loginUser.role;
     },
     data() {
         return {
@@ -57,10 +60,13 @@ export default {
 .el-menu-item-group__title {
     display: none;
 }
-.sub-menu-item:hover {
-    color: rgb(255, 208, 75)!important;
-    i {
-        color: rgb(255, 208, 75)!important;
+.sub-menu-item {
+    min-width: 150px !important;
+    &:hover {
+        color: rgb(255, 208, 75) !important;
+        i {
+            color: rgb(255, 208, 75) !important;
+        }
     }
 }
 </style>

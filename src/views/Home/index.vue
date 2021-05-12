@@ -4,7 +4,7 @@
             <el-aside ref="aside">
                 <AsideNavMenu :isCollapse="isCollapse" :menu="menu" />
             </el-aside>
-            <el-main>
+            <el-main ref="main">
                 <Breadcrumb @hiddenMenu="handleHidden" :breadMenu="breadMenu" />
                 <router-view></router-view>
             </el-main>
@@ -59,6 +59,7 @@ export default {
         handleHidden() {
             this.isCollapse = !this.isCollapse;
             this.$refs.aside.$el.classList.toggle('hidden');
+            this.$refs.main.$el.classList.toggle('hidden');
         }
     },
 }
@@ -71,6 +72,8 @@ export default {
     background: #001529;   
     overflow: hidden;
     transition: width .3s;
+    position: fixed;
+    top: 0;
 
     &.hidden {
         width: 64px!important;
@@ -78,5 +81,11 @@ export default {
 }
 .el-main {
     padding: 0;
+    margin-left: 180px;
+    transition: .3s;
+
+    &.hidden {
+        margin-left: 64px!important;
+    }
 }
 </style>

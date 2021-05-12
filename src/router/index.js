@@ -28,6 +28,8 @@ router.beforeEach(async (to, from, next) => {
       if(user.role !== 'admin') {
         alert('非管理员身份不能进行商品类目管理');
         next(from.path);
+      }else {
+        next();
       }
     }
     else {

@@ -120,7 +120,7 @@ export default {
 
 <style lang="less" scoped>
 .user-info-container {
-    width: 700px;
+    width: 70%;
     border: 1px solid #eee;
     padding: 20px;
     margin: 10px auto 0;

@@ -41,9 +41,9 @@ export default [
             icon: 'el-icon-menu'
         },
         children: [
-            { path: '/goods/add', component: AddGoods, name: "AddGoods", meta: { navItem: "添加商品", icon: 'el-icon-circle-plus-outline' } },
             { path: '/goods/list', component: GoodsList, name: "GoodsList", meta: { navItem: "商品列表", icon: 'el-icon-s-fold' } },
-            { path: '/goods/manage', component: GoodsManage, name: "GoodsManage", meta: { navItem: "类目管理", canHidden: true } },
+            { path: '/goods/add', component: AddGoods, name: "AddGoods", meta: { navItem: "添加商品", icon: 'el-icon-circle-plus-outline' } },
+            { path: '/goods/manage', component: GoodsManage, name: "GoodsManage", meta: { navItem: "类目管理", icon: 'el-icon-s-custom', canHidden: true } },
         ]
     },
     {
